@@ -1,0 +1,29 @@
+USE master;
+
+REFERENCE ASSEMBLY JsonParser;
+//Odczyt z pliku
+@INPUT_FILE =
+    EXTRACT groupName string,
+            fieldName string,
+            fieldValue double,
+            timestamp DateTime
+    FROM @"{jsonPath}"
+         
+    USING new JsonParser.JsonExtractor();
+
+//Obliczenie odchylenia standardowego
+@a1 =
+    SELECT groupName,
+           fieldName,
+           fieldValue,
+           STDEVP(fieldValue) OVER(PARTITION BY fieldName) AS standardDev,
+           timestamp
+    FROM @INPUT_FILE;
+//Zapis do pliku
+OUTPUT @a1
+TO "{outputFilePath}"
+USING Outputters.Csv();
+
+
+
+                                                                              

@@ -1,0 +1,16 @@
+USE master;
+DECLARE @ASM = "/Assembly/JsonParser.dll";
+DECLARE @ASM_ADD = "/Assembly/Newtonsoft.Json.dll";
+DROP ASSEMBLY IF EXISTS master;
+DROP ASSEMBLY IF EXISTS JsonParser;
+DROP ASSEMBLY IF EXISTS [Newtonsoft.Json];
+CREATE ASSEMBLY JsonParser
+FROM @ASM
+WITH ADDITIONAL FILES =
+   (
+         @ASM_ADD
+    );
+
+
+
+                                                                              
